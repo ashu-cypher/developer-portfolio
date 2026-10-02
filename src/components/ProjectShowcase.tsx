@@ -56,6 +56,10 @@ function FeaturedBuild({
   project: Project;
   onSelect: (project: Project) => void;
 }) {
+  const hasGithub = isConfigured(project.github);
+  const hasDemo = isConfigured(project.demo);
+  // Demo-only projects (no GitHub repo) link the title to the live project.
+  const primaryLink = hasGithub ? project.github : project.demo;
   return (
     <Reveal className="h-full">
       <article
@@ -67,7 +71,7 @@ function FeaturedBuild({
             <p className="font-mono text-xs tracking-[0.25em] text-neon">FEATURED BUILD</p>
             <h3 className="mt-3 font-display text-2xl font-bold text-ink sm:text-3xl">
               <a
-                href={project.github}
+                href={primaryLink}
                 target="_blank"
                 rel="noreferrer"
                 className="transition-colors hover:text-neon-glow"
@@ -100,15 +104,26 @@ function FeaturedBuild({
           </dl>
 
           <div className="mt-auto flex flex-wrap items-center gap-3 pt-2">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary min-h-[44px] px-5 py-2.5 text-sm"
-            >
-              <GitHubIcon size={16} />
-              View on GitHub
-            </a>
+            {hasGithub ? (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary min-h-[44px] px-5 py-2.5 text-sm"
+              >
+                <GitHubIcon size={16} />
+                View on GitHub
+              </a>
+            ) : (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary min-h-[44px] px-5 py-2.5 text-sm"
+              >
+                Open live project <span aria-hidden="true">→</span>
+              </a>
+            )}
             <button
               type="button"
               onClick={() => onSelect(project)}
@@ -116,7 +131,7 @@ function FeaturedBuild({
             >
               Case study
             </button>
-            {isConfigured(project.demo) && (
+            {hasGithub && hasDemo && (
               <a
                 href={project.demo}
                 target="_blank"
@@ -204,7 +219,7 @@ export default function ProjectShowcase() {
   const [filter, setFilter] = useState<Filter>("ALL");
 
   const featured = useMemo(
-    () => portfolio.projects.filter((p) => isConfigured(p.github)),
+    () => portfolio.projects.filter((p) => isConfigured(p.github) || isConfigured(p.demo)),
     []
   );
 

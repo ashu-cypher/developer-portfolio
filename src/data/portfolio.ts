@@ -315,6 +315,35 @@ export const portfolio: PortfolioData = {
       status: "building",
       accent: "violet",
     },
+    {
+      id: "pocket-derma",
+      name: "Pocket Derma",
+      tagline: "AI-powered skincare recommendation app.",
+      description:
+        "Pocket Derma is an AI-powered skincare recommendation application: tell it about your skin and it recommends a routine tailored to you. The whole app was built with Lovable, with the AI's recommendation behavior shaped through prompt engineering.",
+      problem:
+        "Skincare advice online is generic and one-size-fits-all. I wanted an app that gives recommendations actually tailored to the individual.",
+      solution:
+        "An AI-driven web app built end-to-end with Lovable: the user describes their skin and concerns, and a prompt-engineered AI agent returns personalized skincare recommendations.",
+      architecture:
+        "Lovable-built web application · AI agent for personalized recommendations · prompt-engineered skincare guidance logic · clean web UI.",
+      features: [
+        "Personalized AI skincare recommendations",
+        "Prompt-engineered recommendation behavior",
+        "Built end-to-end with Lovable's AI app builder",
+      ],
+      technologies: ["Lovable", "AI Agents", "Generative AI", "Prompt Engineering", "UI/UX"],
+      challenges: ["Shaping reliable, useful recommendations through prompt engineering"],
+      learned: [
+        "Prompt engineering for a domain-specific AI application",
+        "Shipping a complete product with AI-assisted development tools",
+      ],
+      image: "",
+      github: "",
+      demo: "https://lovable.dev/projects/22baad28-3854-4809-bed9-9ac909facf1b",
+      status: "complete",
+      accent: "amber",
+    },
   ],
 
   /**
