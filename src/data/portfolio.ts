@@ -476,18 +476,15 @@ export const portfolio: PortfolioData = {
     },
   ],
 
-  resumePath: "", // TODO: drop your resume PDF into /public (e.g. "/resume.pdf") and set the path
+  resumePath: "/ashutosh-dhagat-resume.pdf",
 
   githubUsername: "ashu-cypher",
 
   socials: {
     github: "https://github.com/ashu-cypher",
     linkedin: "https://www.linkedin.com/in/ashutosh-dhagat-b324a526a/",
-    // TODO: the email below is INCOMPLETE as provided — "dhagatashutosh" has no
-    // domain. Do NOT invent a domain; replace this string with the full address
-    // (e.g. "dhagatashutosh@example.com") and the mailto links + contact form
-    // will start working automatically.
-    email: "dhagatashutosh",
+    // Email now complete: dhagatashutosh@gmail.com (provided by the user 2026-10-02).
+    email: "dhagatashutosh@gmail.com",
   },
 
   interests: [
