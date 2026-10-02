@@ -505,7 +505,11 @@ export const portfolio: PortfolioData = {
     },
   ],
 
-  resumePath: "/ashutosh-dhagat-resume.pdf",
+  /**
+   * Path to the resume PDF. Resolved against the Vite base so it works both
+   * locally and on GitHub Pages (/developer-portfolio/). Leave "" for a clean fallback.
+   */
+  resumePath: `${import.meta.env.BASE_URL}ashutosh-dhagat-resume.pdf`,
 
   githubUsername: "ashu-cypher",
 
