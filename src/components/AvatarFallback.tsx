@@ -1,51 +1,58 @@
 /**
- * AvatarFallback — pure CSS/DOM "digital identity" used as the Suspense
+ * AvatarFallback — pure CSS/DOM block figure used as the Suspense
  * fallback and the WebGL-unavailable fallback for the 3D identity scene.
  *
- * An abstract holographic scan motif: glowing orb with a sweeping scan
- * ring and orbiting nodes. aria-hidden: purely decorative.
+ * A minimal block-style avatar echoing the 3D BlockAvatar: blocky head
+ * with two small glowing eyes, dark torso blocks, a faint seam line,
+ * and a gentle float animation. aria-hidden: purely decorative.
  */
 export function AvatarFallback({ className = "" }: { className?: string }) {
   return (
     <div className={className} aria-hidden="true">
       <style>{`
-        @keyframes fallback-scan {
-          0% { top: 8%; opacity: 0; }
-          12% { opacity: 1; }
-          88% { opacity: 1; }
-          100% { top: 88%; opacity: 0; }
-        }
-        @keyframes fallback-orbit {
-          to { transform: rotate(360deg); }
+        @keyframes fallback-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
         }
         @keyframes fallback-pulse {
           0%, 100% { opacity: 0.55; }
           50% { opacity: 1; }
         }
-        .fallback-scanline { animation: fallback-scan 3.2s ease-in-out infinite; }
-        .fallback-orbit { animation: fallback-orbit 14s linear infinite; }
-        .fallback-orbit-rev { animation: fallback-orbit 22s linear infinite reverse; }
+        @keyframes fallback-seam {
+          0%, 100% { opacity: 0.35; }
+          50% { opacity: 0.8; }
+        }
+        .fallback-float { animation: fallback-float 5s ease-in-out infinite; }
         .fallback-pulse { animation: fallback-pulse 2.6s ease-in-out infinite; }
+        .fallback-seam { animation: fallback-seam 3.4s ease-in-out infinite; }
       `}</style>
-      <div className="relative flex h-56 w-56 items-center justify-center">
-        {/* Core orb */}
-        <div className="fallback-pulse relative h-32 w-32 overflow-hidden rounded-full border border-neon/40 bg-neon/10 shadow-[0_0_50px_rgba(34,211,238,0.25)] backdrop-blur-sm">
-          {/* wireframe suggestion */}
-          <div className="absolute inset-3 rounded-full border border-neon/25" />
-          <div className="absolute inset-6 rounded-full border border-neon/20" />
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(103,232,249,0.35),transparent_60%)]" />
-          {/* scanning line */}
-          <div className="fallback-scanline absolute left-1 right-1 h-px bg-neon shadow-[0_0_12px_rgba(34,211,238,0.9)]" />
-          {/* face dots */}
-          <div className="absolute left-[30%] top-[38%] h-1.5 w-1.5 rounded-full bg-neon-glow" />
-          <div className="absolute right-[30%] top-[38%] h-1.5 w-1.5 rounded-full bg-neon-glow" />
+      <div className="fallback-float relative flex flex-col items-center">
+        {/* Block head with two small glowing eyes */}
+        <div className="relative h-24 w-24 border border-white/10 bg-[#141c30] shadow-[0_0_40px_rgba(34,211,238,0.15)]">
+          {/* dark glass face plate */}
+          <div className="absolute inset-x-3 top-3 bottom-3 bg-[#0a1220]/80" />
+          <div className="fallback-pulse absolute left-[30%] top-[42%] h-1.5 w-1.5 rounded-sm bg-neon-glow shadow-[0_0_10px_rgba(103,232,249,0.9)]" />
+          <div className="fallback-pulse absolute right-[30%] top-[42%] h-1.5 w-1.5 rounded-sm bg-neon-glow shadow-[0_0_10px_rgba(103,232,249,0.9)]" />
+          {/* faint visor line */}
+          <div className="fallback-seam absolute inset-x-4 top-[58%] h-px bg-neon/70" />
         </div>
-        {/* Orbit rings */}
-        <div className="fallback-orbit absolute inset-0 rounded-full border border-dashed border-neon/25">
-          <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-neon shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+        {/* Neck */}
+        <div className="h-4 w-8 bg-[#1a2338]" />
+        {/* Broad block torso with chest inlay */}
+        <div className="relative h-28 w-36 border border-white/10 bg-[#0d1220] shadow-[0_0_40px_rgba(34,211,238,0.12)]">
+          <div className="fallback-seam absolute left-3 top-0 h-full w-px bg-neon/50" />
+          <div className="fallback-seam absolute right-3 top-0 h-full w-px bg-neon/50" />
+          <div className="fallback-pulse absolute left-1/2 top-6 h-4 w-4 -translate-x-1/2 rotate-45 border border-neon/60 bg-neon/20" />
         </div>
-        <div className="fallback-orbit-rev absolute inset-4 rounded-full border border-pulse/25">
-          <div className="absolute -bottom-1 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-pulse shadow-[0_0_8px_rgba(167,139,250,0.9)]" />
+        {/* Block arms */}
+        <div className="pointer-events-none absolute left-1/2 top-[7.5rem] flex w-56 -translate-x-1/2 justify-between">
+          <div className="h-24 w-8 bg-[#0d1220]" />
+          <div className="h-24 w-8 bg-[#0d1220]" />
+        </div>
+        {/* Block legs */}
+        <div className="flex gap-3">
+          <div className="h-20 w-10 bg-[#1a2338]" />
+          <div className="h-20 w-10 bg-[#1a2338]" />
         </div>
       </div>
     </div>

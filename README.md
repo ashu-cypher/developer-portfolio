@@ -61,11 +61,6 @@ Node 18+ / npm 9+ recommended (developed on Node 24).
   (no percentages, ever)
 - `currentlyBuilding[]` — `BUILDING` / `EXPERIMENTING` / `LEARNING` statuses
 - `achievements[]` — **leave `[]` and the whole section hides itself**
-- `certifications[]` — **real certifications only, added by hand.**
-  LinkedIn blocks automated reads of its Licenses & Certifications section
-  (login/privacy wall), so copy each entry from your LinkedIn profile:
-  `{ name, organization, issueDate, credentialId, credentialUrl, assetPath }`.
-  Leave `[]` and the section shows an elegant empty state — never fake cards.
 - `resumePath` — e.g. `"/resume.pdf"`; `""` shows a clean fallback, no broken link
 - `githubUsername`, `socials` — GitHub / LinkedIn / email links
 
@@ -117,8 +112,8 @@ src/
   components/
     AvatarScene.tsx        # fixed 3D background canvas + scroll states
     avatarRig.ts           # scroll-state rig (targets + lerp math)
-    DigitalSelf.tsx        # procedural digital-human bust (scan cycle, particles)
-    AvatarFallback.tsx     # CSS identity (Suspense + no-WebGL fallback)
+    BlockAvatar.tsx        # original procedural block-style avatar (breathing, seams, particles)
+    AvatarFallback.tsx     # CSS block figure (Suspense + no-WebGL fallback)
     Hero.tsx               # full-screen intro + neural particle field
     SystemIdentity.tsx     # sparse floating identity labels around the figure
     SectionDivider.tsx     # quiet hairline transitions between sections
@@ -130,7 +125,6 @@ src/
     ProjectShowcase.tsx    # Featured Builds + filterable repo grid + modal state
     ProjectModal.tsx       # detail dialog (architecture flow diagram, Esc, focus trap)
     ExperienceSection.tsx  # "Beyond Code" involvement timeline
-    Certifications.tsx     # certificate wall (empty state when no data)
     SkillsSection.tsx      # honest skill clusters
     CurrentlyBuilding.tsx  # status-badged work-in-progress cards
     Achievements.tsx       # hidden when data is empty

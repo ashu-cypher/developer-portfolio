@@ -1,7 +1,8 @@
 /**
  * AvatarScene — the site's centerpiece: a fixed, full-viewport,
- * pointer-events-none 3D background canvas holding the "digital self",
- * a procedural holographic identity that reacts to the visible section.
+ * pointer-events-none 3D background canvas holding the block avatar,
+ * a procedural premium block-style identity that reacts to the visible
+ * section.
  *
  * - Tries /models/avatar.glb first (HEAD check); falls back to the
  *   procedural identity if the file is missing. Never throws.
@@ -28,7 +29,7 @@ import {
 import { useReducedMotion } from "framer-motion";
 import * as THREE from "three";
 import AvatarFallback from "./AvatarFallback";
-import DigitalSelf from "./DigitalSelf";
+import BlockAvatar from "./BlockAvatar";
 import { updateRig, type AvatarState } from "./avatarRig";
 
 export type { AvatarState };
@@ -95,7 +96,7 @@ function BackdropGlow() {
   useEffect(() => () => texture.dispose(), [texture]);
 
   return (
-    <mesh position={[0, 0.9, -2.5]}>
+    <mesh position={[2.2, 0.8, -2.5]}>
       <planeGeometry args={[8, 5.5]} />
       <meshBasicMaterial map={texture} transparent depthWrite={false} />
     </mesh>
@@ -126,7 +127,7 @@ function FloorAura() {
   useEffect(() => () => texture.dispose(), [texture]);
 
   return (
-    <mesh position={[1.7, -1.6, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh position={[2.2, -1.7, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[9, 9]} />
       <meshBasicMaterial map={texture} transparent depthWrite={false} />
     </mesh>
@@ -249,7 +250,7 @@ export default function AvatarScene({ state }: { state: AvatarState }) {
               {glbAvailable ? (
                 <GlbAvatar state={state} reduced={reduced} mobile={mobile} />
               ) : (
-                <DigitalSelf state={state} reduced={reduced} mobile={mobile} />
+                <BlockAvatar state={state} reduced={reduced} mobile={mobile} />
               )}
             </Canvas>
           </Suspense>

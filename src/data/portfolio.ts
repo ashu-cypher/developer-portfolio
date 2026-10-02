@@ -70,7 +70,7 @@ export interface Project {
   technologies: string[];
   challenges: string[];
   learned: string[];
-  /** Optional image under /public (e.g. "/images/jarvis.png"). Leave "" for generated visual. */
+  /** Optional image under /public (e.g. "/images/mew.png"). Leave "" for generated visual. */
   image: string;
   /** Real GitHub URL only. Leave "" to hide the button. */
   github: string;
@@ -138,30 +138,10 @@ export interface BuildingItem {
 
 export interface Achievement {
   title: string;
-  /** e.g. "Academic", "Hackathon", "Certification" */
+  /** e.g. "Academic", "Hackathon", "Recognition" */
   category: string;
   period: string;
   description: string;
-}
-
-/**
- * A real certification — only add what you actually hold.
- * LinkedIn does not expose certifications through a public API, so these
- * are maintained by hand. Never invent entries.
- */
-export interface Certification {
-  /** Exact certificate name, e.g. "Google Cloud Certified — ..." */
-  name: string;
-  /** Issuing organization, e.g. "Google Cloud" */
-  organization: string;
-  /** e.g. "Mar 2026" — "" when unknown */
-  issueDate: string;
-  /** Credential ID from the issuer — "" when not provided */
-  credentialId: string;
-  /** Real verification URL — "" hides the Verify button */
-  credentialUrl: string;
-  /** Optional path under /public to a certificate image or PDF */
-  assetPath: string;
 }
 
 export interface SocialLinks {
@@ -188,15 +168,6 @@ export interface PortfolioData {
   currentlyBuilding: BuildingItem[];
   /** Leave [] and the whole Achievements section is hidden. */
   achievements: Achievement[];
-  /**
-   * Real certifications only. LinkedIn's certifications can't be read
-   * automatically (login/privacy wall), so add them here by hand:
-   *   { name: "…", organization: "…", issueDate: "…",
-   *     credentialId: "…", credentialUrl: "https://…", assetPath: "" }
-   * Leave [] and the section shows a tasteful empty state instead of
-   * fake certificates.
-   */
-  certifications: Certification[];
   /** Path under /public, e.g. "/resume.pdf". Leave "" for a clean fallback. */
   resumePath: string; // TODO: drop your resume PDF into /public and set the path
   githubUsername: string;
@@ -245,17 +216,10 @@ export const portfolio: PortfolioData = {
       tags: ["React", "TypeScript", "Capacitor", "Web Audio", "TTS"],
     },
     {
-      period: "Sep 2026",
-      title: "AethoFlix — original discovery experience",
-      description:
-        "Built an original Netflix-style movie/show discovery site from a hand-verified dataset of 52 real titles: hero carousel, genre rows, search, detail modals, a personal list, and a 3D theatre mode.",
-      tags: ["React", "TypeScript", "TMDB data", "3D UI"],
-    },
-    {
       period: "Sep – Oct 2026",
-      title: "J.A.R.V.I.S. — personal AI agent",
+      title: "MEW — personal AI agent",
       description:
-        "Built a JARVIS-style personal AI assistant end to end: an orchestrator pipeline (understand → remember → plan → tools → execute → verify → respond → remember), layered memory, RAG over documents, resume intelligence, a modular tool system, and a voice-reactive Stark HUD frontend.",
+        "Built MEW, a personal AI assistant, end to end: an orchestrator pipeline (understand → remember → plan → tools → execute → verify → respond → remember), layered memory, RAG over documents, resume intelligence, a modular tool system, and a voice-reactive Stark HUD frontend.",
       tags: ["Python", "FastAPI", "React", "PostgreSQL", "pgvector", "RAG", "AI Agents"],
     },
     {
@@ -276,11 +240,11 @@ export const portfolio: PortfolioData = {
 
   projects: [
     {
-      id: "jarvis",
-      name: "J.A.R.V.I.S.",
-      tagline: "A JARVIS-style personal AI assistant with memory, tools and voice.",
+      id: "mew",
+      name: "MEW",
+      tagline: "A personal AI assistant with memory, tools and voice.",
       description:
-        "J.A.R.V.I.S. is a personal AI agent built around an orchestrator pipeline: every request flows through understand → remember → plan → use tools → execute → verify → respond → remember. It has layered short/long-term memory, RAG over uploaded documents, resume/CV analysis with job matching, a modular tool system with confirmation gates for destructive actions, and a voice interface with wake-word detection.",
+        "MEW is a personal AI agent built around an orchestrator pipeline: every request flows through understand → remember → plan → use tools → execute → verify → respond → remember. It has layered short/long-term memory, RAG over uploaded documents, resume/CV analysis with job matching, a modular tool system with confirmation gates for destructive actions, and a voice interface with wake-word detection.",
       problem:
         "Chatbots forget everything and can't act. I wanted an assistant that remembers context across sessions, can use real tools, and asks before doing anything destructive.",
       solution:
@@ -351,43 +315,6 @@ export const portfolio: PortfolioData = {
       status: "building",
       accent: "violet",
     },
-    {
-      id: "aethoflix",
-      name: "AethoFlix",
-      tagline: "Original Netflix-style movie & show discovery experience.",
-      description:
-        "An original discovery site for movies and shows built from a hand-verified dataset of 52 real titles (40 movies + 12 shows) with real posters, ratings, overviews and trailers. Features a hero carousel, Top-10 row, genre filtering, search, detail modals, a persistent My List, and a 3D Theatre mode.",
-      problem:
-        "I wanted to practice building a rich, media-heavy discovery UI — but with fully original branding and a dataset I verified myself, instead of copying an existing service.",
-      solution:
-        "A React single-page experience rendering entirely from a curated local dataset: no fake content, no copied branding. Rows, search and detail views are all data-driven, and My List persists in localStorage.",
-      architecture:
-        "React + TypeScript + Vite · curated JSON dataset (posters/backdrops/ratings/overviews/trailer IDs verified against public TMDB pages) · localStorage for My List · CSS 3D transforms for Theatre mode.",
-      features: [
-        "Hero carousel with featured titles",
-        "Content rows including Top 10",
-        "Search + genre filters",
-        "Detail modal with trailer, cast and overview",
-        "My List persisted in localStorage",
-        "3D Theatre viewing mode",
-      ],
-      technologies: ["React", "TypeScript", "Vite", "CSS 3D", "TMDB data"],
-      challenges: [
-        "Verifying 52 titles by hand so every poster, rating and overview is real",
-        "Designing an original brand that feels premium without copying Netflix",
-        "Keeping a media-heavy page fast: lazy-loaded imagery, lightweight transforms",
-      ],
-      learned: [
-        "Data curation discipline: real datasets beat placeholder content",
-        "Building immersive UI (theatre mode) with pure CSS 3D",
-        "When to stop: shipping the experience instead of gold-plating it",
-      ],
-      image: "",
-      github: "",
-      demo: "",
-      status: "complete",
-      accent: "amber",
-    },
   ],
 
   /**
@@ -399,7 +326,7 @@ export const portfolio: PortfolioData = {
       name: "spidey",
       url: "https://github.com/ashu-cypher/spidey",
       description:
-        "SPIDEY — a personal AI agent (JARVIS-style): orchestrator with persistent memory, RAG knowledge base, resume intelligence, 10 tools, and live workflow visualization. FastAPI + React + PostgreSQL/pgvector.",
+        "SPIDEY (MEW) — a personal AI agent: orchestrator with persistent memory, RAG knowledge base, resume intelligence, 10 tools, and live workflow visualization. FastAPI + React + PostgreSQL/pgvector.",
       language: "Python",
       stars: 0,
       updatedAt: "2026-10-02",
@@ -506,7 +433,7 @@ export const portfolio: PortfolioData = {
 
   currentlyBuilding: [
     {
-      title: "J.A.R.V.I.S. voice interface",
+      title: "MEW voice interface",
       emoji: "🤖",
       description:
         "Hardening the wake-word + speech pipeline and verifying it on a real browser with a microphone — the one part never run end-to-end yet.",
@@ -550,13 +477,6 @@ export const portfolio: PortfolioData = {
   ],
 
   resumePath: "", // TODO: drop your resume PDF into /public (e.g. "/resume.pdf") and set the path
-
-  /**
-   * No certifications added yet — see the Certification interface above.
-   * LinkedIn blocks automated reads, so paste your real certifications
-   * here from your LinkedIn profile's Licenses & Certifications section.
-   */
-  certifications: [],
 
   githubUsername: "ashu-cypher",
 

@@ -68,7 +68,7 @@ export function SystemIdentity() {
       </div>
       {/* Left edge, low: quiet annotation near the copy */}
       <Label
-        k="Synthetic portrait — rendered in real time"
+        k="Block avatar — rendered in real time"
         delay={1.25}
         className="absolute bottom-[10%] left-[4%] opacity-70"
       />

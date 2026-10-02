@@ -5,7 +5,6 @@ import AboutSection from "./components/AboutSection";
 import JourneyTimeline from "./components/JourneyTimeline";
 import ProjectShowcase from "./components/ProjectShowcase";
 import ExperienceSection from "./components/ExperienceSection";
-import Certifications from "./components/Certifications";
 import SkillsSection from "./components/SkillsSection";
 import CurrentlyBuilding from "./components/CurrentlyBuilding";
 import Achievements from "./components/Achievements";
@@ -30,7 +29,6 @@ const SECTION_IDS = [
   "journey",
   "projects",
   "experience",
-  "certifications",
   "skills",
   "building",
   "achievements",
@@ -51,7 +49,6 @@ function avatarStateForSection(section: string): AvatarState {
     case "projects":
     case "github":
     case "achievements":
-    case "certifications":
       return "projects";
     case "skills":
     case "building":
@@ -102,8 +99,6 @@ function App() {
         <ProjectShowcase />
         <SectionDivider />
         <ExperienceSection />
-        <SectionDivider />
-        <Certifications />
         <SectionDivider />
         <SkillsSection />
         <CurrentlyBuilding />

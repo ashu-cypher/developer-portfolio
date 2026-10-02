@@ -23,15 +23,15 @@ export interface RigTarget {
 }
 
 export const DESKTOP_TARGETS: Record<AvatarState, RigTarget> = {
-  idle: { pos: [1.7, -0.5, 0], scale: 1, headY: 0, rootY: 0.15 },
-  about: { pos: [1.9, -0.5, 0], scale: 1, headY: -0.45, rootY: 0.1 },
-  journey: { pos: [1.7, -0.5, 0], scale: 1, headY: 0, rootY: 0.1 },
-  projects: { pos: [1.7, -0.35, 0], scale: 0.95, headY: 0.15, rootY: 0.2 },
-  skills: { pos: [0, -0.55, 0], scale: 0.9, headY: 0, rootY: -0.15 },
-  contact: { pos: [0, -0.5, 0.4], scale: 1.05, headY: 0, rootY: 0 },
+  idle: { pos: [2.2, -0.85, -0.8], scale: 1.45, headY: 0, rootY: 0.15 },
+  about: { pos: [2.4, -0.85, -0.8], scale: 1.45, headY: -0.45, rootY: 0.1 },
+  journey: { pos: [2.2, -0.85, -0.8], scale: 1.4, headY: 0, rootY: 0.1 },
+  projects: { pos: [2.1, -0.8, -0.8], scale: 1.38, headY: 0.15, rootY: 0.2 },
+  skills: { pos: [0, -0.9, -0.8], scale: 1.3, headY: 0, rootY: -0.15 },
+  contact: { pos: [0, -0.85, -0.2], scale: 1.4, headY: 0, rootY: 0 },
 };
 
-export const MOBILE_POS: [number, number, number] = [0, -1.2, 0];
+export const MOBILE_POS: [number, number, number] = [0, -1.35, 0];
 export const MOBILE_SCALE = 0.6;
 
 /**
@@ -62,7 +62,7 @@ export function updateRig(
       ? mobile
         ? MOBILE_POS[0]
         : target.pos[0]
-      : 1.7 + Math.sin(t * 0.5) * 0.4;
+      : target.pos[0] + Math.sin(t * 0.5) * 0.4;
   const ty = mobile ? MOBILE_POS[1] : target.pos[1];
   const tz = mobile ? MOBILE_POS[2] : target.pos[2];
   const sc = mobile ? MOBILE_SCALE : target.scale;
