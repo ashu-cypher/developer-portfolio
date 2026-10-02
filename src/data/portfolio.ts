@@ -9,30 +9,41 @@
  *    (the site shows a subtle "not configured" hint, never a lie).
  *  - Add/remove entries from arrays to change what renders.
  *  - Never invent data here — if you don't know it, leave it blank.
+ *
+ *  GitHub repos below were verified against the live GitHub API on
+ *  2026-10-02. To refresh:
+ *    python3 -c "
+ *    import sys; sys.path.insert(0,'/home/hatch/workspace/skills/github/bin')
+ *    from gh_api import req
+ *    repos = req('GET','/users/ashu-cypher/repos?per_page=100&sort=updated')
+ *    [print(r['name'], '|', r['language'], '|', r['stargazers_count'], '|', r['updated_at'][:10], '|', r['description']) for r in repos]
+ *    "
  * ============================================================
  */
 
 export type SkillLevel = "comfortable" | "building" | "exploring";
 export type BuildStatus = "BUILDING" | "EXPERIMENTING" | "LEARNING";
 export type ProjectStatus = "complete" | "building";
+export type RepoCategory = "AI-ML" | "WEB" | "AUTOMATION" | "PYTHON" | "OTHER";
 
 export interface PersonalInfo {
   /** Full name shown in hero, nav and footer */
   name: string;
-  /** e.g. "Computer Engineering Student & AI Developer" */
+  /** e.g. "B.E. Computer Engineering · AI & Intelligent Systems" */
   headline: string;
   /** One-line supporting statement */
   tagline: string;
-  /** Short location label, e.g. "Pune, India" — TODO if unknown */
-  location: string; // TODO: replace with your location, or leave "" to hide
+  /** Short location label, e.g. "Pune, Maharashtra, India" */
+  location: string;
 }
 
 export interface Education {
   degree: string;
-  /** TODO: replace with your college / university name */
-  college: string; // TODO: replace
-  /** TODO: e.g. "Third Year" — leave "" to hide */
-  yearOfStudy: string; // TODO: replace
+  college: string;
+  /** e.g. "Third Year" — leave "" to hide */
+  yearOfStudy: string;
+  /** e.g. "2028" — leave "" to hide */
+  graduation: string;
   specialization: string;
 }
 
@@ -70,6 +81,43 @@ export interface Project {
   accent: "cyan" | "violet" | "amber";
 }
 
+/**
+ * A real public repository, verified against the GitHub API.
+ * Add entries by hand to feature repos the API didn't return.
+ */
+export interface GithubRepo {
+  /** Repository slug, e.g. "spidey" */
+  name: string;
+  /** Full https://github.com/… URL — always real, never fabricated */
+  url: string;
+  /** The repo's own description from GitHub (may be "") */
+  description: string;
+  /** Primary language from GitHub, "" when GitHub reports none */
+  language: string;
+  stars: number;
+  /** ISO date of last push, e.g. "2026-10-02" */
+  updatedAt: string;
+  /** Filter buckets this repo appears under */
+  categories: RepoCategory[];
+  /** True = shown in the "Featured Builds" case-study area */
+  featured: boolean;
+}
+
+export interface ExperienceEntry {
+  /** Display label, e.g. "2026" */
+  period: string;
+  /** What the involvement is called — never invent an official title */
+  role: string;
+  /** Organization / community */
+  organization: string;
+  /** e.g. "Ambassadorship", "Community" */
+  kind: string;
+  /** One neutral line. Only what was actually provided — no invented
+   *  responsibilities, durations, certificates or achievements. */
+  description: string;
+  tags: string[];
+}
+
 export interface SkillItem {
   name: string;
   level: SkillLevel;
@@ -98,10 +146,8 @@ export interface Achievement {
 
 export interface SocialLinks {
   github: string;
-  /** TODO: replace with your LinkedIn URL, or "" to hide */
-  linkedin: string; // TODO: replace
-  /** TODO: replace with your email, or "" to hide (contact form disables cleanly) */
-  email: string; // TODO: replace
+  linkedin: string;
+  email: string;
 }
 
 export interface PortfolioData {
@@ -112,7 +158,12 @@ export interface PortfolioData {
   /** Animated stats — ONLY values derivable from this file. Leave [] to hide. */
   stats: { label: string; value: string }[];
   journey: JourneyEntry[];
+  /** Curated case studies with full write-ups (shown with detail modals) */
   projects: Project[];
+  /** Real repositories from GitHub (rendered in the filterable repo grid) */
+  githubRepos: GithubRepo[];
+  /** Involvement & activities — presented as such, never as invented jobs */
+  experience: ExperienceEntry[];
   skills: SkillCategory[];
   currentlyBuilding: BuildingItem[];
   /** Leave [] and the whole Achievements section is hidden. */
@@ -128,28 +179,30 @@ export interface PortfolioData {
 export const portfolio: PortfolioData = {
   personal: {
     name: "Ashutosh Dhagat",
-    headline: "Computer Engineering Student & AI Developer",
-    tagline:
-      "Building intelligent systems, useful applications and experimental AI experiences.",
-    location: "", // TODO: replace with your location, or leave "" to hide
+    headline: "B.E. Computer Engineering · Artificial Intelligence & Intelligent Systems",
+    tagline: "Building intelligent systems that feel alive.",
+    location: "Pune, Maharashtra, India",
   },
 
   education: {
     degree: "B.E. Computer Engineering",
-    college: "", // TODO: replace with your college / university name
-    yearOfStudy: "", // TODO: e.g. "Third Year" — leave "" to hide
+    college: "Alard College of Engineering",
+    yearOfStudy: "",
+    graduation: "2028",
     specialization: "Artificial Intelligence & Intelligent Systems",
   },
 
   about: [
-    "I'm a Computer Engineering student who learns by building. Instead of just studying concepts, I turn them into working systems — AI assistants, learning apps, and full-stack experiments.",
-    "Right now I'm deep into AI agents, retrieval-augmented generation, and practical software systems: the kind of work where an idea becomes something you can actually run, click, and talk to.",
+    "I'm a B.E. Computer Engineering student at Alard College of Engineering, specializing in Artificial Intelligence & Intelligent Systems. I learn by building: AI assistants with real memory, bilingual learning apps, retrieval pipelines — systems you can actually run, click, and talk to.",
+    "My focus is practical intelligent software: AI agents, retrieval-augmented generation, automation systems, and interactive digital experiences. I care about honest engineering — verified behavior, graceful fallbacks, and interfaces that respect the person using them.",
   ],
 
-  // Only honest, data-derived stats. projects.length etc. stay true automatically.
+  // Only honest, data-derived stats.
+  // "4" repos · "21" distinct skills across the categories below ·
+  // "4" currently-building items — all counted from this file.
   stats: [
-    { label: "Projects Built", value: "3" },
-    { label: "Technologies", value: "14" },
+    { label: "Projects Shipped", value: "4" },
+    { label: "Technologies", value: "21" },
     { label: "Currently Building", value: "4" },
     { label: "Focus", value: "AI Systems" },
   ],
@@ -308,43 +361,116 @@ export const portfolio: PortfolioData = {
     },
   ],
 
+  /**
+   * Verified against https://api.github.com/users/ashu-cypher/repos on 2026-10-02.
+   * Descriptions, languages, star counts and update dates are real.
+   */
+  githubRepos: [
+    {
+      name: "spidey",
+      url: "https://github.com/ashu-cypher/spidey",
+      description:
+        "SPIDEY — a personal AI agent (JARVIS-style): orchestrator with persistent memory, RAG knowledge base, resume intelligence, 10 tools, and live workflow visualization. FastAPI + React + PostgreSQL/pgvector.",
+      language: "Python",
+      stars: 0,
+      updatedAt: "2026-10-02",
+      categories: ["AI-ML", "PYTHON"],
+      featured: true,
+    },
+    {
+      name: "ai-learning-adventure",
+      url: "https://github.com/ashu-cypher/ai-learning-adventure",
+      description:
+        "AI Learning Adventure — Multi-Agent AI Educational Game & Android APK for Preschoolers.",
+      language: "TypeScript",
+      stars: 0,
+      updatedAt: "2026-09-27",
+      categories: ["AI-ML", "WEB"],
+      featured: true,
+    },
+    {
+      name: "developer-portfolio",
+      url: "https://github.com/ashu-cypher/developer-portfolio",
+      description:
+        "Interactive 3D developer portfolio — React + Vite + TypeScript + Tailwind + React Three Fiber.",
+      language: "TypeScript",
+      stars: 0,
+      updatedAt: "2026-10-02",
+      categories: ["WEB"],
+      featured: false,
+    },
+    {
+      name: "Drivera",
+      url: "https://github.com/ashu-cypher/Drivera",
+      description: "A mini project.",
+      language: "",
+      stars: 0,
+      updatedAt: "2026-05-12",
+      categories: ["OTHER"],
+      featured: false,
+    },
+  ],
+
+  experience: [
+    {
+      period: "2026",
+      role: "Student Ambassador",
+      organization: "GeeksforGeeks",
+      kind: "Ambassadorship",
+      description: "Student ambassador with the GeeksforGeeks community.",
+      tags: ["Community", "Student Leadership"],
+    },
+    {
+      period: "2026",
+      role: "AI / Developer Community Involvement",
+      organization: "Google Gemini",
+      kind: "Community",
+      description: "Engaged with the Google Gemini AI and developer community.",
+      tags: ["AI", "Community"],
+    },
+  ],
+
   skills: [
     {
-      category: "Programming",
+      category: "AI / Machine Learning",
       items: [
         { name: "Python", level: "comfortable" },
-        { name: "TypeScript", level: "comfortable" },
-        { name: "JavaScript", level: "comfortable" },
-        { name: "HTML", level: "comfortable" },
-        { name: "CSS", level: "comfortable" },
-      ],
-    },
-    {
-      category: "AI / ML",
-      items: [
-        { name: "AI Agents", level: "building" },
+        { name: "Artificial Intelligence", level: "building" },
+        { name: "Machine Learning", level: "building" },
+        { name: "Generative AI", level: "building" },
         { name: "RAG", level: "building" },
-        { name: "LLMs", level: "building" },
-        { name: "Embeddings", level: "building" },
-        { name: "Vector Databases", level: "exploring" },
+        { name: "AI Agents", level: "building" },
       ],
     },
     {
-      category: "Backend",
-      items: [
-        { name: "FastAPI", level: "comfortable" },
-        { name: "Node.js", level: "exploring" },
-        { name: "PostgreSQL", level: "building" },
-        { name: "pgvector", level: "building" },
-      ],
-    },
-    {
-      category: "Frontend",
+      category: "Development",
       items: [
         { name: "React", level: "comfortable" },
-        { name: "Vite", level: "comfortable" },
-        { name: "Tailwind CSS", level: "comfortable" },
-        { name: "Capacitor", level: "building" },
+        { name: "JavaScript", level: "comfortable" },
+        { name: "Node.js", level: "exploring" },
+        { name: "HTML", level: "comfortable" },
+        { name: "CSS", level: "comfortable" },
+        { name: "REST APIs", level: "building" },
+      ],
+    },
+    {
+      category: "Backend / Data",
+      items: [
+        { name: "Python", level: "comfortable" },
+        { name: "SQL", level: "building" },
+        { name: "MySQL", level: "building" },
+        { name: "Oracle", level: "exploring" },
+        { name: "Databases", level: "building" },
+      ],
+    },
+    {
+      category: "Tools",
+      items: [
+        { name: "Git", level: "comfortable" },
+        { name: "GitHub", level: "comfortable" },
+        { name: "VS Code", level: "comfortable" },
+        { name: "n8n", level: "exploring" },
+        { name: "Ollama", level: "exploring" },
       ],
     },
   ],
@@ -400,18 +526,22 @@ export const portfolio: PortfolioData = {
 
   socials: {
     github: "https://github.com/ashu-cypher",
-    linkedin: "", // TODO: replace with your LinkedIn URL, or "" to hide
-    email: "", // TODO: replace with your email — the contact form uses this for its mailto fallback
+    linkedin: "https://www.linkedin.com/in/ashutosh-dhagat-b324a526a/",
+    // TODO: the email below is INCOMPLETE as provided — "dhagatashutosh" has no
+    // domain. Do NOT invent a domain; replace this string with the full address
+    // (e.g. "dhagatashutosh@example.com") and the mailto links + contact form
+    // will start working automatically.
+    email: "dhagatashutosh",
   },
 
   interests: [
     "Artificial Intelligence",
     "AI Agents",
     "RAG",
-    "Full-Stack Development",
-    "Python",
+    "Computer Vision",
     "Automation",
-    "Intelligent Applications",
+    "Full-Stack Development",
+    "Intelligent Systems",
   ],
 };
 
@@ -432,3 +562,18 @@ export const BUILD_STATUS_LABEL: Record<BuildStatus, string> = {
   EXPERIMENTING: "Experimenting",
   LEARNING: "Learning",
 };
+
+export const REPO_CATEGORY_LABEL: Record<RepoCategory, string> = {
+  "AI-ML": "AI / ML",
+  WEB: "Web",
+  AUTOMATION: "Automation",
+  PYTHON: "Python",
+  OTHER: "Other",
+};
+
+/** "2026-10-02" → "Oct 2026" */
+export function formatRepoDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}

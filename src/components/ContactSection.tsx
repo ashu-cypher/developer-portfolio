@@ -132,7 +132,7 @@ export default function ContactSection() {
         <SectionHeading
           eyebrow="Contact"
           title="Let's build something."
-          subtitle="Have a project, an internship, or just a good idea? Reach out — I read everything."
+          subtitle="Have a project, internship opportunity, collaboration or interesting idea? Let's talk."
         />
 
         <div className="mt-12 grid gap-10 lg:grid-cols-2">

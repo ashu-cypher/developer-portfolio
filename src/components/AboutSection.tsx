@@ -82,6 +82,16 @@ export default function AboutSection() {
                   </dd>
                 </div>
                 <div className="flex flex-col gap-1.5">
+                  <dt className="font-mono text-xs uppercase tracking-widest text-mist">Graduation</dt>
+                  <dd>
+                    {isConfigured(education.graduation) ? (
+                      <span className="text-ink/90">{education.graduation}</span>
+                    ) : (
+                      <HintChip>Graduation — not configured yet</HintChip>
+                    )}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1.5">
                   <dt className="font-mono text-xs uppercase tracking-widest text-mist">Location</dt>
                   <dd>
                     {isConfigured(personal.location) ? (

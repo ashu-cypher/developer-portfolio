@@ -8,11 +8,9 @@ interface NavbarProps {
 const LINKS: { label: string; href: string; id: string }[] = [
   { label: "Home", href: "#home", id: "home" },
   { label: "About", href: "#about", id: "about" },
-  { label: "Journey", href: "#journey", id: "journey" },
   { label: "Projects", href: "#projects", id: "projects" },
+  { label: "Experience", href: "#experience", id: "experience" },
   { label: "Skills", href: "#skills", id: "skills" },
-  { label: "Building", href: "#building", id: "building" },
-  { label: "Resume", href: "#resume", id: "resume" },
   { label: "Contact", href: "#contact", id: "contact" },
 ];
 

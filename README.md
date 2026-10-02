@@ -1,10 +1,14 @@
-# Ashutosh Dhagat — Interactive 3D Developer Portfolio
+# Ashutosh Dhagat | AI & Computer Engineering
 
-A highly polished, interactive developer portfolio built around a large,
-animated blocky 3D avatar that reacts as you scroll through the developer's
-journey — from hero to contact. Dark futuristic aesthetic, cyan/violet accents.
+A premium, futuristic personal portfolio for a B.E. Computer Engineering
+student specializing in Artificial Intelligence & Intelligent Systems. Built
+around a procedural 3D **"digital self"** — a holographic facial
+reconstruction (translucent core, wireframe topology, facial point-cloud
+with neural connections, sweeping scan ring) that reacts as you scroll —
+plus an interactive system-identity readout, real GitHub repository data,
+and a "Beyond Code" involvement timeline.
 
-**Live concept:** *"This isn't a webpage. This is the developer's interactive world."*
+**Concept:** *"AI engineer + digital laboratory + premium interactive portfolio."*
 
 ## Tech stack
 
@@ -35,9 +39,24 @@ Node 18+ / npm 9+ recommended (developed on Node 24).
 - `education` — degree, college, year of study, specialization
 - `about`, `stats` — bio paragraphs + honest stat strings
 - `journey[]` — timeline entries (`period`, `title`, `description`, `tags[]`)
-- `projects[]` — full detail used by cards + the detail modal
+- `projects[]` — full detail used by featured builds + the detail modal
   (`problem`, `solution`, `architecture`, `features[]`, `technologies[]`,
   `challenges[]`, `learned[]`, real `github`/`demo` URLs or `""`)
+- `githubRepos[]` — **real repositories, verified against the GitHub API**
+  (name, url, description, language, stars, updatedAt, categories, featured).
+  Refresh with:
+  ```bash
+  python3 -c "
+  import sys; sys.path.insert(0,'/home/hatch/workspace/skills/github/bin')
+  from gh_api import req
+  repos = req('GET','/users/ashu-cypher/repos?per_page=100&sort=updated')
+  [print(r['name'],'|',r['language'],'|',r['stargazers_count'],'|',r['updated_at'][:10],'|',r['description']) for r in repos]
+  "
+  ```
+  then paste the results into `githubRepos`. Categories drive the filter tabs:
+  `AI-ML` / `WEB` / `AUTOMATION` / `PYTHON` / `OTHER`.
+- `experience[]` — involvement & activities (`period`, `role`, `organization`,
+  `kind`, `description`, `tags[]`); shown as-is, never inflated
 - `skills[]` — categories with `comfortable` / `building` / `exploring` levels
   (no percentages, ever)
 - `currentlyBuilding[]` — `BUILDING` / `EXPERIMENTING` / `LEARNING` statuses
@@ -51,22 +70,26 @@ pointing back at this file instead.
 
 ### Still placeholder (fill these in)
 
-- College / university name, year of study, location
-- Email address (activates the contact form's mailto flow)
-- LinkedIn URL
-- Resume PDF path
+- **Email domain** — `socials.email` is `"dhagatashutosh"` exactly as provided
+  (no domain invented). Replace it with the full address and the contact
+  form + mailto links activate automatically.
+- Resume PDF path (`public/resume.pdf` → set `resumePath: "/resume.pdf"`)
 
-## The 3D avatar
+## The 3D digital self
 
-- **Default:** a procedural, original blocky character built from three.js
-  primitives (no external model, no Roblox branding) with idle breathing,
-  blinking, and six scroll-driven states: idle, looks-at-content, walking,
-  interacting (floating cubes), tech-orbit, facing-the-visitor.
+- **Default:** a procedural "digital identity" — a futuristic synthetic head
+  suggesting a holographic facial reconstruction: translucent core,
+  wireframe topology shell, ~400-point facial scan with neural-network
+  connections, sweeping scan ring, counter-rotating holographic shells,
+  orbiting data shards, soft eye glows. Slow rotation, subtle mouse-follow
+  tilt, scroll-driven states (idle, looks-at-content, drift, interacting,
+  tech-orbit, facing-the-visitor).
 - **Custom model:** drop a GLB at `public/models/avatar.glb` — the scene
   `HEAD`-checks that path and loads it automatically, falling back to the
-  procedural avatar if it's missing. The app never fails without it.
-- **No WebGL?** A pure-CSS blocky avatar renders instead; the whole site
-  remains fully functional.
+  procedural identity if it's missing. The app never fails without it.
+- **No WebGL / mobile fallback:** a pure-CSS scan-orb motif renders instead;
+  particle counts are reduced on small screens. The whole site remains
+  fully functional.
 - The scene is **lazy-loaded** (`React.lazy` + `Suspense`) so the 3D bundle
   (~900 KB) never blocks first paint. `prefers-reduced-motion` renders a
   static pose and disables reveal transforms.
@@ -78,21 +101,24 @@ src/
   data/portfolio.ts        # ← edit everything here
   components/
     AvatarScene.tsx        # fixed 3D background canvas + scroll states
-    AvatarFallback.tsx     # CSS avatar (Suspense + no-WebGL fallback)
-    Hero.tsx               # full-screen intro
+    avatarRig.ts           # scroll-state rig (targets + lerp math)
+    DigitalSelf.tsx        # procedural holographic identity
+    AvatarFallback.tsx     # CSS identity (Suspense + no-WebGL fallback)
+    Hero.tsx               # full-screen intro + neural particle field
+    SystemIdentity.tsx     # interactive [ ASHUTOSH.DHAGAT ] status readout
     Navbar.tsx             # floating pill nav, active-section highlight, mobile menu
     ScrollProgress.tsx     # top scroll progress bar
     CustomCursor.tsx       # desktop-only subtle cursor ring
     AboutSection.tsx       # bio, education, interests, stats
     JourneyTimeline.tsx    # scroll-animated timeline
-    ProjectShowcase.tsx    # project grid (owns modal state)
-    ProjectCard.tsx        # tilt card
+    ProjectShowcase.tsx    # Featured Builds + filterable repo grid + modal state
     ProjectModal.tsx       # detail dialog (Esc, focus trap, scroll lock)
+    ExperienceSection.tsx  # "Beyond Code" involvement timeline
     SkillsSection.tsx      # honest skill clusters
     CurrentlyBuilding.tsx  # status-badged work-in-progress cards
     Achievements.tsx       # hidden when data is empty
     ResumeSection.tsx      # view/download with missing-file fallback
-    GithubSection.tsx      # profile link + real repo cards (no fake stats)
+    GithubSection.tsx      # profile link (repo grid lives in Projects)
     ContactSection.tsx     # validated form → mailto, or clean disabled state
     Footer.tsx             # dynamic copyright year
     Reveal.tsx / SectionHeading.tsx   # shared primitives

@@ -13,7 +13,11 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <p className="font-display text-lg font-semibold text-ink">{personal.name}</p>
+            <p className="font-display text-lg font-semibold text-ink">
+              <a href="#home" className="transition-colors hover:text-neon-glow">
+                {personal.name}
+              </a>
+            </p>
             <p className="mt-1 text-sm text-mist">Built with curiosity, code &amp; caffeine.</p>
           </div>
           <nav aria-label="Social" className="flex flex-wrap items-center gap-2">

@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
 import JourneyTimeline from "./components/JourneyTimeline";
 import ProjectShowcase from "./components/ProjectShowcase";
+import ExperienceSection from "./components/ExperienceSection";
 import SkillsSection from "./components/SkillsSection";
 import CurrentlyBuilding from "./components/CurrentlyBuilding";
 import Achievements from "./components/Achievements";
@@ -26,6 +27,7 @@ const SECTION_IDS = [
   "about",
   "journey",
   "projects",
+  "experience",
   "skills",
   "building",
   "achievements",
@@ -39,6 +41,7 @@ function avatarStateForSection(section: string): AvatarState {
   switch (section) {
     case "about":
     case "resume":
+    case "experience":
       return "about";
     case "journey":
       return "journey";
@@ -90,6 +93,7 @@ function App() {
         <AboutSection />
         <JourneyTimeline />
         <ProjectShowcase />
+        <ExperienceSection />
         <SkillsSection />
         <CurrentlyBuilding />
         <Achievements />
