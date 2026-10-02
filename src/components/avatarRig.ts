@@ -36,7 +36,9 @@ export const MOBILE_SCALE = 0.6;
 
 /**
  * Lerp the outer group toward its per-state target. The inner group gets a
- * gentle "journey" bob. Returns the eased interpolation factor used.
+ * gentle "journey" bob. `extraYaw` adds a continuous scroll-driven yaw
+ * offset on top of the per-state target. Returns the eased interpolation
+ * factor used.
  */
 export function updateRig(
   outer: THREE.Group | null,
@@ -45,7 +47,8 @@ export function updateRig(
   reduced: boolean,
   mobile: boolean,
   t: number,
-  dt: number
+  dt: number,
+  extraYaw = 0
 ) {
   if (!outer) return;
   const target = DESKTOP_TARGETS[state];
@@ -69,7 +72,8 @@ export function updateRig(
   outer.position.z += (tz - outer.position.z) * k;
   const s = outer.scale.x + (sc - outer.scale.x) * k;
   outer.scale.setScalar(s);
-  outer.rotation.y += (target.rootY - outer.rotation.y) * kr;
+  const rootTarget = target.rootY + extraYaw;
+  outer.rotation.y += (rootTarget - outer.rotation.y) * kr;
 
   if (inner) {
     const walking = state === "journey" && !reduced;

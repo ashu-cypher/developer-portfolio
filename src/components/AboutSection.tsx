@@ -71,16 +71,14 @@ export default function AboutSection() {
                     )}
                   </dd>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <dt className="font-mono text-xs uppercase tracking-widest text-mist">Year of study</dt>
-                  <dd>
-                    {isConfigured(education.yearOfStudy) ? (
+                {isConfigured(education.yearOfStudy) && (
+                  <div className="flex flex-col gap-1.5">
+                    <dt className="font-mono text-xs uppercase tracking-widest text-mist">Year of study</dt>
+                    <dd>
                       <span className="text-ink/90">{education.yearOfStudy}</span>
-                    ) : (
-                      <HintChip>Year of study — not configured yet</HintChip>
-                    )}
-                  </dd>
-                </div>
+                    </dd>
+                  </div>
+                )}
                 <div className="flex flex-col gap-1.5">
                   <dt className="font-mono text-xs uppercase tracking-widest text-mist">Graduation</dt>
                   <dd>

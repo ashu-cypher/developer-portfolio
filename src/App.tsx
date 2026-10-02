@@ -5,6 +5,7 @@ import AboutSection from "./components/AboutSection";
 import JourneyTimeline from "./components/JourneyTimeline";
 import ProjectShowcase from "./components/ProjectShowcase";
 import ExperienceSection from "./components/ExperienceSection";
+import Certifications from "./components/Certifications";
 import SkillsSection from "./components/SkillsSection";
 import CurrentlyBuilding from "./components/CurrentlyBuilding";
 import Achievements from "./components/Achievements";
@@ -15,6 +16,7 @@ import Footer from "./components/Footer";
 import ScrollProgress from "./components/ScrollProgress";
 import CustomCursor from "./components/CustomCursor";
 import AvatarFallback from "./components/AvatarFallback";
+import { SectionDivider } from "./components/SectionDivider";
 import { useActiveSection } from "./hooks/useActiveSection";
 import type { AvatarState } from "./components/AvatarScene";
 
@@ -28,6 +30,7 @@ const SECTION_IDS = [
   "journey",
   "projects",
   "experience",
+  "certifications",
   "skills",
   "building",
   "achievements",
@@ -48,6 +51,7 @@ function avatarStateForSection(section: string): AvatarState {
     case "projects":
     case "github":
     case "achievements":
+    case "certifications":
       return "projects";
     case "skills":
     case "building":
@@ -90,15 +94,23 @@ function App() {
 
       <main id="main" className="relative">
         <Hero />
+        <SectionDivider />
         <AboutSection />
+        <SectionDivider />
         <JourneyTimeline />
+        <SectionDivider />
         <ProjectShowcase />
+        <SectionDivider />
         <ExperienceSection />
+        <SectionDivider />
+        <Certifications />
+        <SectionDivider />
         <SkillsSection />
         <CurrentlyBuilding />
         <Achievements />
         <ResumeSection />
         <GithubSection />
+        <SectionDivider />
         <ContactSection />
       </main>
 

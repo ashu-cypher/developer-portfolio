@@ -44,18 +44,6 @@
 }
 
 @layer components {
-  /* Subtle perspective grid backdrop */
-  .bg-grid {
-    background-image:
-      linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
-  .bg-grid-fade {
-    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
-    mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
-  }
-
   /* Frosted panel (used sparingly) */
   .glass {
     background: rgba(13, 20, 40, 0.72);

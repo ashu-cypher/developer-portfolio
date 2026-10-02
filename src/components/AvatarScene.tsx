@@ -22,7 +22,6 @@ import {
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   ContactShadows,
-  Grid,
   Sparkles,
   useGLTF,
 } from "@react-three/drei";
@@ -103,6 +102,36 @@ function BackdropGlow() {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Soft floor aura — grounds the figure without any grid/HUD look      */
+/* ------------------------------------------------------------------ */
+function FloorAura() {
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      const grad = ctx.createRadialGradient(128, 128, 4, 128, 128, 128);
+      grad.addColorStop(0, "rgba(34, 211, 238, 0.10)");
+      grad.addColorStop(0.6, "rgba(34, 211, 238, 0.04)");
+      grad.addColorStop(1, "rgba(5, 7, 15, 0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 256, 256);
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    return tex;
+  }, []);
+
+  useEffect(() => () => texture.dispose(), [texture]);
+
+  return (
+    <mesh position={[1.7, -1.6, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[9, 9]} />
+      <meshBasicMaterial map={texture} transparent depthWrite={false} />
+    </mesh>
+  );
+}
 /* ------------------------------------------------------------------ */
 /* Error boundary: WebGL failure -> CSS fallback                        */
 /* ------------------------------------------------------------------ */
@@ -197,6 +226,7 @@ export default function AvatarScene({ state }: { state: AvatarState }) {
 
               {/* Scene dressing */}
               <BackdropGlow />
+              <FloorAura />
               <Sparkles
                 count={mobile ? 25 : 55}
                 scale={[9, 4.5, 3]}
@@ -214,19 +244,6 @@ export default function AvatarScene({ state }: { state: AvatarState }) {
                 speed={0.25}
                 color="#a78bfa"
                 opacity={0.4}
-              />
-              <Grid
-                position={[0, -1.62, 0]}
-                args={[12, 12]}
-                cellSize={0.6}
-                cellThickness={0.6}
-                cellColor="#0b1330"
-                sectionSize={3}
-                sectionThickness={1.1}
-                sectionColor="#112244"
-                fadeDistance={17}
-                fadeStrength={2.2}
-                infiniteGrid
               />
 
               {glbAvailable ? (

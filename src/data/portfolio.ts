@@ -24,7 +24,7 @@
 export type SkillLevel = "comfortable" | "building" | "exploring";
 export type BuildStatus = "BUILDING" | "EXPERIMENTING" | "LEARNING";
 export type ProjectStatus = "complete" | "building";
-export type RepoCategory = "AI-ML" | "WEB" | "AUTOMATION" | "PYTHON" | "OTHER";
+export type RepoCategory = "AI-ML" | "AI-AGENTS" | "WEB" | "AUTOMATION" | "PYTHON" | "OTHER";
 
 export interface PersonalInfo {
   /** Full name shown in hero, nav and footer */
@@ -144,6 +144,26 @@ export interface Achievement {
   description: string;
 }
 
+/**
+ * A real certification — only add what you actually hold.
+ * LinkedIn does not expose certifications through a public API, so these
+ * are maintained by hand. Never invent entries.
+ */
+export interface Certification {
+  /** Exact certificate name, e.g. "Google Cloud Certified — ..." */
+  name: string;
+  /** Issuing organization, e.g. "Google Cloud" */
+  organization: string;
+  /** e.g. "Mar 2026" — "" when unknown */
+  issueDate: string;
+  /** Credential ID from the issuer — "" when not provided */
+  credentialId: string;
+  /** Real verification URL — "" hides the Verify button */
+  credentialUrl: string;
+  /** Optional path under /public to a certificate image or PDF */
+  assetPath: string;
+}
+
 export interface SocialLinks {
   github: string;
   linkedin: string;
@@ -168,6 +188,15 @@ export interface PortfolioData {
   currentlyBuilding: BuildingItem[];
   /** Leave [] and the whole Achievements section is hidden. */
   achievements: Achievement[];
+  /**
+   * Real certifications only. LinkedIn's certifications can't be read
+   * automatically (login/privacy wall), so add them here by hand:
+   *   { name: "…", organization: "…", issueDate: "…",
+   *     credentialId: "…", credentialUrl: "https://…", assetPath: "" }
+   * Leave [] and the section shows a tasteful empty state instead of
+   * fake certificates.
+   */
+  certifications: Certification[];
   /** Path under /public, e.g. "/resume.pdf". Leave "" for a clean fallback. */
   resumePath: string; // TODO: drop your resume PDF into /public and set the path
   githubUsername: string;
@@ -374,7 +403,7 @@ export const portfolio: PortfolioData = {
       language: "Python",
       stars: 0,
       updatedAt: "2026-10-02",
-      categories: ["AI-ML", "PYTHON"],
+      categories: ["AI-ML", "AI-AGENTS", "PYTHON"],
       featured: true,
     },
     {
@@ -385,7 +414,7 @@ export const portfolio: PortfolioData = {
       language: "TypeScript",
       stars: 0,
       updatedAt: "2026-09-27",
-      categories: ["AI-ML", "WEB"],
+      categories: ["AI-ML", "AI-AGENTS", "WEB"],
       featured: true,
     },
     {
@@ -522,6 +551,13 @@ export const portfolio: PortfolioData = {
 
   resumePath: "", // TODO: drop your resume PDF into /public (e.g. "/resume.pdf") and set the path
 
+  /**
+   * No certifications added yet — see the Certification interface above.
+   * LinkedIn blocks automated reads, so paste your real certifications
+   * here from your LinkedIn profile's Licenses & Certifications section.
+   */
+  certifications: [],
+
   githubUsername: "ashu-cypher",
 
   socials: {
@@ -565,6 +601,7 @@ export const BUILD_STATUS_LABEL: Record<BuildStatus, string> = {
 
 export const REPO_CATEGORY_LABEL: Record<RepoCategory, string> = {
   "AI-ML": "AI / ML",
+  "AI-AGENTS": "AI Agents",
   WEB: "Web",
   AUTOMATION: "Automation",
   PYTHON: "Python",

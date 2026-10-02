@@ -29,6 +29,70 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
+/**
+ * ArchitectureFlow — renders the architecture string as an elegant
+ * stage diagram instead of a code block: INPUT -> PROCESSING -> OUTPUT
+ * style nodes connected by arrows (vertical on mobile, flowing grid on
+ * desktop). Falls back to plain text when the string has no separators.
+ */
+function ArchitectureFlow({ architecture }: { architecture: string }) {
+  const stages = architecture
+    .split(/[·—]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (stages.length < 2) {
+    return (
+      <p className="text-sm leading-relaxed text-ink/90">{architecture}</p>
+    );
+  }
+
+  return (
+    <ol
+      aria-label="System architecture flow"
+      className="flex flex-col gap-0 sm:flex-row sm:flex-wrap sm:items-stretch"
+    >
+      {stages.map((stage, i) => (
+        <li key={i} className="flex flex-1 flex-col sm:min-w-[10rem] sm:flex-row sm:items-center">
+          <div className="flex flex-1 flex-col items-center gap-3 py-1">
+            <span
+              aria-hidden="true"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-neon/40 bg-neon/10 font-mono text-xs font-semibold text-neon-glow"
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <p className="max-w-[16rem] text-center text-xs leading-relaxed text-ink/90 sm:text-[13px]">
+              {stage}
+            </p>
+          </div>
+          {i < stages.length - 1 && (
+            <span
+              aria-hidden="true"
+              className="flex justify-center py-2 sm:px-2 sm:py-0"
+            >
+              {/* down arrow on mobile, right arrow on desktop */}
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="rotate-90 text-neon/60 sm:rotate-0"
+              >
+                <path d="M5 12h14" />
+                <path d="m13 6 6 6-6 6" />
+              </svg>
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function ModalContent({ project, onClose }: { project: Project; onClose: () => void }) {
   const reduceMotion = useReducedMotion();
   const titleId = useId();
@@ -165,9 +229,7 @@ function ModalContent({ project, onClose }: { project: Project; onClose: () => v
           </ModalSection>
 
           <ModalSection title="Architecture">
-            <pre className="whitespace-pre-wrap rounded-xl border border-line/60 bg-void/60 p-4 font-mono text-xs leading-relaxed text-mist sm:text-sm">
-              {project.architecture}
-            </pre>
+            <ArchitectureFlow architecture={project.architecture} />
           </ModalSection>
 
           {project.features.length > 0 && (

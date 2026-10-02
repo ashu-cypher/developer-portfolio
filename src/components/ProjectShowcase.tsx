@@ -23,7 +23,7 @@ import { SectionHeading } from "./SectionHeading";
 import { ProjectModal } from "./ProjectModal";
 
 type Filter = RepoCategory | "ALL";
-const FILTERS: Filter[] = ["ALL", "AI-ML", "WEB", "AUTOMATION", "PYTHON", "OTHER"];
+const FILTERS: Filter[] = ["ALL", "AI-ML", "AI-AGENTS", "WEB", "AUTOMATION", "PYTHON", "OTHER"];
 
 const LANGUAGE_COLOR: Record<string, string> = {
   Python: "#3572A5",

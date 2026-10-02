@@ -1,84 +1,77 @@
 /**
- * SystemIdentity — an interactive "digital identity" readout shown in the
- * hero next to the 3D identity. A compact HUD panel: system status rows
- * plus selectable focus areas. Tasteful, keyboard-operable, no fake
- * terminal chatter.
+ * SystemIdentity — minimal floating identity labels around the 3D figure.
+ * A few elegant technical annotations, deliberately sparse: no fake
+ * terminal, no dashboard. Purely decorative (the same information lives
+ * in the hero copy), so it's hidden from assistive tech.
  */
-import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { portfolio } from "../data/portfolio";
 
-const FOCUS_AREAS: { label: string; blurb: string }[] = [
-  { label: "AI & Intelligent Systems", blurb: "The specialization — systems that perceive, reason and act." },
-  { label: "Agentic AI", blurb: "Orchestrated agents with memory, tools and verification." },
-  { label: "Full-Stack Development", blurb: "React frontends, FastAPI backends, databases that behave." },
-  { label: "Automation", blurb: "Pipelines and agents that remove repetitive work." },
-  { label: "Computer Vision", blurb: "Teaching machines to see — the next frontier." },
-  { label: "Software Engineering", blurb: "Clean architecture, honest limits, verified behavior." },
-];
-
-function StatusRow({ k, v, live = false }: { k: string; v: string; live?: boolean }) {
+function Label({
+  k,
+  v,
+  className = "",
+  delay = 0,
+  line = false,
+}: {
+  k: string;
+  v?: string;
+  className?: string;
+  delay?: number;
+  line?: boolean;
+}) {
+  const reduce = useReducedMotion();
   return (
-    <div className="flex items-center justify-between gap-6 py-1">
-      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-mist">{k}</span>
-      <span className="inline-flex items-center gap-2 font-mono text-[11px] tracking-wider text-ink">
-        {live && (
-          <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-neon" />
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={`pointer-events-none select-none ${className}`}
+    >
+      <div className="flex items-center gap-2.5">
+        {line && <span aria-hidden="true" className="h-px w-8 bg-neon/40" />}
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-mist/80">
+          {k}
+        </span>
+        {v && (
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/90">
+            {v}
           </span>
         )}
-        {v}
-      </span>
-    </div>
+      </div>
+    </motion.div>
   );
 }
 
 export function SystemIdentity() {
-  const [focus, setFocus] = useState(0);
-  const active = FOCUS_AREAS[focus];
-
   return (
     <div
-      className="glass w-full max-w-md rounded-2xl p-5"
-      role="region"
-      aria-label="Digital identity status"
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 hidden select-none lg:block"
     >
-      <p className="font-mono text-sm font-semibold tracking-[0.25em] text-neon-glow">
-        [ ASHUTOSH.DHAGAT ]
-      </p>
-
-      <div className="mt-3 border-t border-line pt-3">
-        <StatusRow k="System status" v="ONLINE" live />
-        <StatusRow k="Role" v="AI Engineer" />
-        <StatusRow k="Location" v={portfolio.personal.location.toUpperCase() || "—"} />
-        <StatusRow k="Build" v={portfolio.education.graduation || "—"} />
+      {/* Top-right: identity handle */}
+      <Label
+        k="[ ASHUTOSH.DHAGAT ]"
+        delay={0.5}
+        line
+        className="absolute right-[8%] top-[16%]"
+      />
+      {/* Mid-right: what it is */}
+      <div className="absolute right-[6%] top-[46%] flex flex-col items-end gap-2">
+        <Label k="Digital identity" delay={0.7} line />
+        <Label k="AI · Intelligent Systems" delay={0.85} />
       </div>
-
-      <div className="mt-4 border-t border-line pt-4">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-mist">
-          Focus areas — select to inspect
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Focus areas">
-          {FOCUS_AREAS.map((f, i) => (
-            <button
-              key={f.label}
-              type="button"
-              onClick={() => setFocus(i)}
-              aria-pressed={focus === i}
-              className={`min-h-[36px] rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
-                focus === i
-                  ? "border-neon/70 bg-neon/15 text-neon-glow shadow-neon-glow"
-                  : "border-line bg-white/[0.03] text-mist hover:border-neon/40 hover:text-ink"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-        <p aria-live="polite" className="mt-3 min-h-[2.5rem] text-sm leading-relaxed text-mist">
-          <span className="text-ink">{active.label}</span> — {active.blurb}
-        </p>
+      {/* Bottom-right: status + location */}
+      <div className="absolute bottom-[14%] right-[10%] flex flex-col items-end gap-2">
+        <Label k="Status" v="Building" delay={1} line />
+        <Label k="Location" v={portfolio.personal.location.toUpperCase()} delay={1.1} />
       </div>
+      {/* Left edge, low: quiet annotation near the copy */}
+      <Label
+        k="Synthetic portrait — rendered in real time"
+        delay={1.25}
+        className="absolute bottom-[10%] left-[4%] opacity-70"
+      />
     </div>
   );
 }

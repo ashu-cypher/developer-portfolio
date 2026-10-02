@@ -54,15 +54,27 @@ Node 18+ / npm 9+ recommended (developed on Node 24).
   "
   ```
   then paste the results into `githubRepos`. Categories drive the filter tabs:
-  `AI-ML` / `WEB` / `AUTOMATION` / `PYTHON` / `OTHER`.
+  `AI-ML` / `AI-AGENTS` / `WEB` / `AUTOMATION` / `PYTHON` / `OTHER`.
 - `experience[]` — involvement & activities (`period`, `role`, `organization`,
   `kind`, `description`, `tags[]`); shown as-is, never inflated
 - `skills[]` — categories with `comfortable` / `building` / `exploring` levels
   (no percentages, ever)
 - `currentlyBuilding[]` — `BUILDING` / `EXPERIMENTING` / `LEARNING` statuses
 - `achievements[]` — **leave `[]` and the whole section hides itself**
+- `certifications[]` — **real certifications only, added by hand.**
+  LinkedIn blocks automated reads of its Licenses & Certifications section
+  (login/privacy wall), so copy each entry from your LinkedIn profile:
+  `{ name, organization, issueDate, credentialId, credentialUrl, assetPath }`.
+  Leave `[]` and the section shows an elegant empty state — never fake cards.
 - `resumePath` — e.g. `"/resume.pdf"`; `""` shows a clean fallback, no broken link
 - `githubUsername`, `socials` — GitHub / LinkedIn / email links
+
+**Live demos:** none of the GitHub repos currently publish a deployment
+(no `homepage` set, no GitHub Pages — verified via the GitHub API on
+2026-10-02). So every project card links to its real repository with
+[ VIEW PROJECT ]. If you later deploy something, set its `demo` URL in
+`projects[]` and a [ LIVE DEMO ] button appears automatically — never add
+a demo URL you can't open in a browser.
 
 Values marked `TODO` in the file are placeholders. Empty strings (`""`) are
 never rendered as facts — the UI shows a subtle "not configured yet" hint
@@ -77,13 +89,16 @@ pointing back at this file instead.
 
 ## The 3D digital self
 
-- **Default:** a procedural "digital identity" — a futuristic synthetic head
-  suggesting a holographic facial reconstruction: translucent core,
-  wireframe topology shell, ~400-point facial scan with neural-network
-  connections, sweeping scan ring, counter-rotating holographic shells,
-  orbiting data shards, soft eye glows. Slow rotation, subtle mouse-follow
-  tilt, scroll-driven states (idle, looks-at-content, drift, interacting,
-  tech-orbit, facing-the-visitor).
+- **Default:** a procedural "digital human" — a synthetic bust (head, neck,
+  shoulders) suggesting a human identity reconstructed by an AI system:
+  dark satin core, translucent holo layers, inner wireframe topology,
+  ~430-point facial scan with neural-network connections, a neural node
+  network around the body, orbiting geometric fragments, subtle eye glows,
+  and an **occasional scan sweep** (every ~9s a thin beam passes and the
+  wireframe brightens, then fades — like identity being reconstructed).
+  Slow rotation, subtle mouse-follow tilt, cursor-reactive particles, a
+  gentle scroll-driven yaw, and scroll states (idle, looks-at-content,
+  drift, interacting, tech-orbit, facing-the-visitor).
 - **Custom model:** drop a GLB at `public/models/avatar.glb` — the scene
   `HEAD`-checks that path and loads it automatically, falling back to the
   procedural identity if it's missing. The app never fails without it.
@@ -102,18 +117,20 @@ src/
   components/
     AvatarScene.tsx        # fixed 3D background canvas + scroll states
     avatarRig.ts           # scroll-state rig (targets + lerp math)
-    DigitalSelf.tsx        # procedural holographic identity
+    DigitalSelf.tsx        # procedural digital-human bust (scan cycle, particles)
     AvatarFallback.tsx     # CSS identity (Suspense + no-WebGL fallback)
     Hero.tsx               # full-screen intro + neural particle field
-    SystemIdentity.tsx     # interactive [ ASHUTOSH.DHAGAT ] status readout
+    SystemIdentity.tsx     # sparse floating identity labels around the figure
+    SectionDivider.tsx     # quiet hairline transitions between sections
     Navbar.tsx             # floating pill nav, active-section highlight, mobile menu
     ScrollProgress.tsx     # top scroll progress bar
     CustomCursor.tsx       # desktop-only subtle cursor ring
     AboutSection.tsx       # bio, education, interests, stats
     JourneyTimeline.tsx    # scroll-animated timeline
     ProjectShowcase.tsx    # Featured Builds + filterable repo grid + modal state
-    ProjectModal.tsx       # detail dialog (Esc, focus trap, scroll lock)
+    ProjectModal.tsx       # detail dialog (architecture flow diagram, Esc, focus trap)
     ExperienceSection.tsx  # "Beyond Code" involvement timeline
+    Certifications.tsx     # certificate wall (empty state when no data)
     SkillsSection.tsx      # honest skill clusters
     CurrentlyBuilding.tsx  # status-badged work-in-progress cards
     Achievements.tsx       # hidden when data is empty
